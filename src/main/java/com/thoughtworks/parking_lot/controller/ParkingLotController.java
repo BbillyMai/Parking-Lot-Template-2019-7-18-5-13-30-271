@@ -5,9 +5,7 @@ import com.thoughtworks.parking_lot.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ParkingLotController {
@@ -20,4 +18,9 @@ public class ParkingLotController {
         return ResponseEntity.status(HttpStatus.CREATED).body(parkingLotService.save(parkingLot));
     }
 
+    @DeleteMapping("/parkingLots/{parkingLotId}")
+    public ResponseEntity<ParkingLot> delete(@PathVariable int parkingLotId){
+        parkingLotService.delete(parkingLotId);
+        return ResponseEntity.accepted().body(null);
+    }
 }

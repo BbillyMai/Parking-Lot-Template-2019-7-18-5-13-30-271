@@ -15,7 +15,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,4 +61,12 @@ public class ParkingLotControllerTest {
                 .andExpect(jsonPath("$.address",is("ZHA")));
     }
 
+    @Test
+    public void should_delete_when_invoke() throws Exception {
+
+        doNothing().when(parkingLotService).delete(anyInt());
+        ResultActions resultActions = mockMvc.perform(delete("/parkingLots/{parkingLotId}",1).accept(MediaType.APPLICATION_JSON));
+        resultActions.andExpect(status().isAccepted());
+        verify(parkingLotService).delete(anyInt());
+    }
 }
